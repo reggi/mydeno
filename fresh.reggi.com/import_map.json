@@ -1,0 +1,20 @@
+{  
+  "imports": {
+    "https://dev.jspm.io/npm:@jspm/core@1/nodelibs/timers.js": "https://ga.jspm.io/npm:@jspm/core@2.0.0-beta.24/nodelibs/deno/timers.ts",
+    "https://dev.jspm.io/inherits@2.0": "https://ga.jspm.io/npm:inherits@2.0.4/inherits.js",
+    "$fresh/": "https://deno.land/x/fresh@1.0.2/",
+    "preact": "https://esm.sh/preact@10.10.0",
+    "preact/": "https://esm.sh/preact@10.10.0/",
+    "preact-render-to-string": "https://esm.sh/preact-render-to-string@5.2.1?external=preact",
+    "@twind": "./utils/twind.ts",
+    "twind": "https://esm.sh/twind@0.16.17",
+    "twind/": "https://esm.sh/twind@0.16.17/",
+    "calendar": "../calendar",
+    "calendar/": "../calendar/"
+  },
+  "scopes": {
+    "https://ga.jspm.io/": {
+      "util": "https://ga.jspm.io/npm:@jspm/core@2.0.0-beta.24/nodelibs/deno/util.ts"
+    }
+  }
+}
