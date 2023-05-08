@@ -1,10 +1,11 @@
 /** @jsx h */
 import { h } from "https://esm.sh/preact@10.13.2";
+import { Image, ImageOptions, spreadImageProps } from "./image.tsx";
 
 type LinkShape = {
   href: string,
   text: string,
-  image?: string,
+  image?: ImageOptions,
 }
 
 type LinksShape = LinkShape[]
@@ -23,17 +24,17 @@ export const cleanLinks = (links: OptionLinks): LinksShape => {
   })
 }
 
-export const Link = (props: { link: LinkShape }) => (
-  <a target="_blank" href={props.link.href} className="link">
-    {props.link.image && (
-      <img src={props.link.image} alt={`Image for link ${props.link.href}`} className="linkImage" />  
+export const Link = (props: LinkShape) => (
+  <a target="_blank" href={props.href} className="link">
+    {props.image && (
+      <Image className="linkImage" width='100' height="100" alt={`Image for link ${props.href}`} {...spreadImageProps(props.image)} />
     )}
-    <p className="linkParagraph">{props.link.text}</p>
+    <p className="linkParagraph">{props.text}</p>
   </a>
 )
 
 export const Links = (props: { links: LinkShape[] }) => (
   <div className="links">
-    {props.links.map((link, i) => <Link link={link}></Link>)}
+    {props.links.map((link, i) => <Link {...link}></Link>)}
   </div>
 )

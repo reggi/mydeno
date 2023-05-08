@@ -6,31 +6,23 @@ import { Links, OptionLinks, cleanLinks } from "./links.tsx"
 import {parseMarkdown} from "https://deno.land/x/markdown_wasm/mod.ts"
 import { HTML, HTMLProps } from "./html.tsx";
 import { preactResponse } from "./utilities.ts";
+import { Image, ImageOptions, spreadImageProps } from "./image.tsx";
 
 export type ArborOptions = {
-  image?: string | { mime: string, data: string},
+  topImage?: ImageOptions,
   summary?: string,
+  footer?: string,
   links?: OptionLinks
 }
 
 export const AnchorArborPageComponent = (props: ArborOptions & HTMLProps) => {
   const links = cleanLinks(props.links || [])
-  
-  const Image = () => {
-    if (typeof props.image === "string") {
-      return <img width="100" height="100" src={props.image} alt={'profile image'} className="topImage"/>
-    } else if (props.image) {
-      const { mime, data } = props.image
-      return <img width="100" height="100" alt={'profile image'} src={`data:${mime};base64, ${data}`} className="topImage"/>
-    } 
-    return null
-  }
-
   return (
     <HTML {...props}>
-      <Image/>
-      {props.summary && <div className="summary" dangerouslySetInnerHTML={{__html: parseMarkdown(props.summary)}}/>}
+      <Image className="topImage" width='100' height="100" {...spreadImageProps(props.topImage)} />
+      {props.summary && <div className="summary markdown" dangerouslySetInnerHTML={{__html: parseMarkdown(props.summary)}}/>}
       <Links links={links}></Links>
+      {props.footer && <div className="footer markdown" dangerouslySetInnerHTML={{__html: parseMarkdown(props.footer)}}/>}
     </HTML>
   )
 }

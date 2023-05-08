@@ -1,28 +1,24 @@
 import { serve } from "https://deno.land/std@0.182.0/http/server.ts";
 import { router } from 'https://crux.land/router@0.0.12'
 import { anchorArbor } from "./anchor_arbor.tsx";
-
-const profile = {
-  "image": {
-    "mime": "image/jpeg",
-    "data": "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"
-  }
-}
+import images from 'https://gist.githubusercontent.com/reggi/5cb4d3223460fc33e1d53f83124f73a5/raw/2b629d4509574faa94557791d1ce98dc5b7890ec/images.json' assert { type: 'json' }
 
 await serve(router({
   '/links': anchorArbor({ 
-    image: profile.image,
+    topImage: images.profile,
     description: "Thomas's Links",
     title: "Thomas Reggi's Links Page",
     keywords: "Personal Website, JavaScript Coder, TypeScript Coder",
     author: "Thomas Reggi",
     tailwindTheme: {
-      "body": "pt-10 bg-[#010522] container mx-auto max-w-screen-md px-10 mb-10",
+      "body": "bg-[#010522] container mx-auto max-w-screen-md py-10 px-10 text-white",
       ".topImage": "mx-auto rounded-full mb-5",
       ".summary": "mb-5",
-      ".summary p": "text-white pb-3",
-      ".summary a": "text-red-300 hover:text-red-200",
-      ".link": "p-5 block hover:bg-white hover:text-black text-white rounded-full border-2 mb-3 md:mb-5 text-center"
+      ".markdown p": "pb-3",
+      ".markdown a": "text-red-300 hover:text-red-200",
+      ".link": "relative block hover:bg-white hover:text-black rounded-full border-2 text-center p-5 mb-3 md:mb-5",
+      ".linkImage": "absolute rounded-full w-[50px] top-[7px] left-[10px]",
+      ".footer": "text-center"
     },
     summary: [
       `Hi, I'm Thomas Reggi (he/they) 👋. I'm a software engineer and artist based in Astoria, Queens 🗽. I'm passionate about coding and using technology as a form of expression 🖌. Outside of work, I enjoy practicing yoga, meditation, and learning about spirituality and Buddhism 🪷. I aspire to continue growing as an engineer and hope to create something that will make a positive impact in the world. I believe in socialist values 💪, where companies can have better structures and employees come first 🚫🏢.`,
@@ -30,18 +26,43 @@ await serve(router({
       `More about what I'm looking for can be found here: [job.reggi.com](/job)`,
     ].join('\n\n'),
     links: {
-      'Mastodon on indieweb.social': "https://indieweb.social/@thomasreggi",
-      "Daily Brushwork": "https://brush.reggi.com/",
+      'Mastodon on indieweb.social': {
+        href: "https://indieweb.social/@thomasreggi",
+        image: images['mastodon.png']
+      },
+      "Daily Brushwork": {
+        href: "https://brush.reggi.com/",
+        image: images['brush.jpg']
+      },
       "Art Collection": "https://art.reggi.com/",
-      "Tech Blog on dev.to": "https://dev.to/reggi",
-      "Personal Substack": "https://reggi.substack.com/",
+      "Tech Blog on dev.to": {
+        href: "https://dev.to/reggi",
+        image: images['devto.png']
+      },
+      "Personal Substack": {
+        href: "https://reggi.substack.com/",
+        image: images['substack.png']
+      },
       "lofi.supply (Side Project)": "https://lofi.supply/",
-      "LinkedIn": "https://linkedin.com/in/thomasreggi",
-      "Github Profile": "https://github.com/reggi",
-      "StackOverflow Profile": "https://stackoverflow.com/users/340688/thomasreggi",
+      "LinkedIn": {
+        href: "https://linkedin.com/in/thomasreggi",
+        image: images['linkedin.png']
+      },
+      "Github Profile": {
+        href: "https://github.com/reggi",
+        image: images['github.png']
+      },
+      "StackOverflow Profile": {
+        href: "https://stackoverflow.com/users/340688/thomasreggi",
+        image: images['stackoverflow.png']
+      },
       "Youtube Channel": "https://www.youtube.com/c/thomasreggi",
       "Instagram": "https://www.instagram.com/thomasreggi",
       "Twitter": "https://twitter.com/thomasreggi"
-    }
+    },
+    footer: [
+      'Created using [Deno](https://deno.land/) & Hosted on Deno Deploy [Playground](https://dash.deno.com/playground/anchor-arbor).',
+      "[Deno module](https://deno.land/x/reggi@0.0.5/static_sites/anchor_arbor.tsx) | [Source Code](https://github.com/reggi/mydeno/blob/main/static_sites/anchor_arbor.tsx)",
+    ].join('\n\n')
   })
 }));
