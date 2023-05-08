@@ -11,15 +11,15 @@ import { Image, ImageOptions, spreadImageProps } from "./image.tsx";
 export type ArborOptions = {
   topImage?: ImageOptions,
   summary?: string,
-  footer?: string,
   links?: OptionLinks
+  footer?: string,
 }
 
 export const AnchorArborPageComponent = (props: ArborOptions & HTMLProps) => {
   const links = cleanLinks(props.links || [])
   return (
     <HTML {...props}>
-      <Image className="topImage" width='100' height="100" {...spreadImageProps(props.topImage)} />
+      {props.topImage && <Image className="topImage" width='100' height="100" {...spreadImageProps(props.topImage)} />}
       {props.summary && <div className="summary markdown" dangerouslySetInnerHTML={{__html: parseMarkdown(props.summary)}}/>}
       <Links links={links}></Links>
       {props.footer && <div className="footer markdown" dangerouslySetInnerHTML={{__html: parseMarkdown(props.footer)}}/>}
